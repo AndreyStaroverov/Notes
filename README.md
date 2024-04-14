@@ -11,6 +11,6 @@ Database diagramm
 ![DB diagram](https://github.com/AndreyStaroverov/Notes/blob/main/Database.png)
 
 
-Further development of the project, technologies used in the future
+Будущее проекта, технологии, которые будут добавляться и развивать проект:
 
 ![Future](https://github.com/AndreyStaroverov/Notes/blob/main/Future.jpg)
