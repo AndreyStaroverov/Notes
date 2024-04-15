@@ -1,6 +1,7 @@
 package notes.severstal.controllers;
 
 import notes.severstal.dto.NoteDto;
+import notes.severstal.dto.NoteDtoUpdate;
 import notes.severstal.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,10 +27,8 @@ public class NoteController {
 
     @GetMapping("/user/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public Collection<NoteDto> getNotes(@PathVariable @Valid @Positive Long userId,
-                                        @RequestParam(value = "from", defaultValue = "0") @Valid @Min(0) Long from,
-                                        @RequestParam(value = "size", defaultValue = "10") @Valid @Min(1) Long size) {
-        return noteService.getNotesByUserId(userId, from, size);
+    public Collection<NoteDto> getNotes(@PathVariable @Valid @Positive Long userId) {
+        return noteService.getNotesByUserId(userId);
     }
 
     @GetMapping("/{noteId}")
@@ -50,10 +49,12 @@ public class NoteController {
         noteService.deleteNoteById(noteId);
     }
 
-    @PatchMapping("/{noteId}")
+    @PatchMapping("/user/{userId}/note/{noteId}")
     @ResponseStatus(HttpStatus.OK)
-    public NoteDto patchNote(@PathVariable @Valid @Positive Long noteId) {
-        return noteService.updateNote(noteId);
+    public NoteDto patchNote(@PathVariable @Valid @Positive Long noteId,
+                             @PathVariable @Positive Long userId,
+                             @Valid @RequestBody NoteDtoUpdate noteDto) {
+        return noteService.updateNote(noteId, userId, noteDto);
     }
 
 }

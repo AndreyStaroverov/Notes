@@ -11,16 +11,9 @@ import java.sql.Timestamp;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class NoteDto {
-
-    @Positive
-    private Long id;
+public class NoteDtoUpdate {
     @NotBlank
     private String text;
-    @Positive
-    private Long owner;
     private Boolean pinned;
-    private Timestamp createDate;
     private String imageLink;
-
 }

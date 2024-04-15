@@ -28,4 +28,6 @@ public class Note {
     private Boolean pinned;
     @Column(name = "createDate", nullable = false)
     private Timestamp createDate;
+    @Column(name = "image_link")
+    private String imageLink;
 }
