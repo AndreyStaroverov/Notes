@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -28,12 +30,16 @@ public class NoteService {
 
     @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public Collection<NoteDto> getNotesByUserId(Long userId) {
-        return MapperNotes.noteToDtoCollection(noteRepository.findAllByOwner_id(userId));
+        return MapperNotes.noteToDtoCollection(noteRepository.findAllByOwnerId(userId));
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public NoteDto createNote(NoteDto noteDto) {
         try {
+            if (noteDto.getPinned() == null) {
+                noteDto.setPinned(false);
+            }
+            noteDto.setCreateDate(Timestamp.from(Instant.now()));
             return MapperNotes.noteToDto(
                     noteRepository.save(MapperNotes.dtoToNote(noteDto,
                             userRepository.getById(noteDto.getOwner())))
@@ -73,7 +79,6 @@ public class NoteService {
 
         note.setText(noteDto.getText());
         note.setPinned(noteDto.getPinned());
-        note.setImageLink(noteDto.getImageLink());
 
         return MapperNotes.noteToDto(noteRepository.save(note));
     }

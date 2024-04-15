@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "users", schema = "public")
+@Table(name = "notes", schema = "public")
 public class Note {
 
     @Id
@@ -26,8 +26,6 @@ public class Note {
     private User owner;
     @Column(name = "pinned", nullable = false)
     private Boolean pinned;
-    @Column(name = "createDate", nullable = false)
+    @Column(name = "createdate", nullable = false)
     private Timestamp createDate;
-    @Column(name = "image_link")
-    private String imageLink;
 }

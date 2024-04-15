@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS notes (
   text VARCHAR(255) NOT NULL,
   pinned BOOLEAN DEFAULT FALSE,
   owner_id BIGINT NOT NULL,
-  createDate TIMESTAMP NOT NULL,
+  createdate TIMESTAMP NOT NULL,
   CONSTRAINT pk_note PRIMARY KEY (id),
   CONSTRAINT fk_owner_id FOREIGN KEY(owner_id) REFERENCES users (id)
 );
@@ -22,6 +22,8 @@ CREATE TABLE IF NOT EXISTS notes (
 -- Создание пользователя
 INSERT INTO users (username, email, password,created_at)
 VALUES ('Backend Developer', '123@example.com', 'password123', NOW());
+INSERT INTO users (username, email, password,created_at)
+VALUES ('Backend Developer2', '1234@example.com', 'password1234', NOW());
 
 -- Создание заметки
 INSERT INTO notes (text, owner_id, createDate)

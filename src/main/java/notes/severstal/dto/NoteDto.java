@@ -21,6 +21,5 @@ public class NoteDto {
     private Long owner;
     private Boolean pinned;
     private Timestamp createDate;
-    private String imageLink;
 
 }

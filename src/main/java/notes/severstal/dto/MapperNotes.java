@@ -18,10 +18,10 @@ public class MapperNotes {
                 noteDto.getText(),
                 owner,
                 noteDto.getPinned(),
-                noteDto.getCreateDate(),
-                noteDto.getImageLink()
+                noteDto.getCreateDate()
         );
     }
+
 
     public static NoteDto noteToDto(Note save) {
         return new NoteDto(
@@ -29,8 +29,7 @@ public class MapperNotes {
                 save.getText(),
                 save.getOwner().getId(),
                 save.getPinned(),
-                save.getCreateDate(),
-                save.getImageLink()
+                save.getCreateDate()
         );
     }
 
@@ -42,8 +41,7 @@ public class MapperNotes {
                     note.getText(),
                     note.getOwner().getId(),
                     note.getPinned(),
-                    note.getCreateDate(),
-                    note.getImageLink()
+                    note.getCreateDate()
             ));
         }
         return noteDtos;

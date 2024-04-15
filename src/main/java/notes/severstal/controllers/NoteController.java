@@ -9,7 +9,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import java.util.Collection;
 
@@ -37,18 +36,21 @@ public class NoteController {
         return noteService.getNoteById(noteId);
     }
 
+    @CrossOrigin
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public NoteDto postNote(@Valid @RequestBody NoteDto noteDto) {
         return noteService.createNote(noteDto);
     }
 
+    @CrossOrigin
     @DeleteMapping("/{noteId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteNote(@PathVariable @Valid @Positive Long noteId) {
         noteService.deleteNoteById(noteId);
     }
 
+    @CrossOrigin
     @PatchMapping("/user/{userId}/note/{noteId}")
     @ResponseStatus(HttpStatus.OK)
     public NoteDto patchNote(@PathVariable @Valid @Positive Long noteId,

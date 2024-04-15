@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Notes App</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 2rem;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .input-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 2rem;
+      animation: slideIn 0.5s ease-in-out;
+    }
+
+    input, button {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 0.25rem;
+      margin-right: 0.5rem;
+    }
+
+    #noteList {
+      list-style-type: none;
+      padding: 2rem;
+      background-color: #333;
+      border-radius: 0.5rem;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+.note {
+  background-color: #555;
+  color: #fff;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  margin-bottom: 1rem;
+  animation: scaleIn 0.5s ease-in-out;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.note-content {
+  flex: 1;
+}
+
+.note-actions {
+  display: flex;
+  flex-shrink: 0;
+  margin-left: 1rem;
+}
+
+    .note button {
+      margin-left: 0.5rem;
+      background-color: #777;
+      color: #fff;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes slideIn {
+      0% { transform: translateY(-20px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes scaleIn {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Notes App</h1>
+  <div class="input-group">
+    <input type="text" id="userIdInput" placeholder="Enter user ID">
+    <button onclick="fetchNotes()">Fetch Notes</button>
+  </div>
+  <ul id="noteList"></ul>
+  <div class="input-group">
+    <input type="text" id="newNoteInput" placeholder="Enter new note">
+    <button onclick="createNote()">Create Note</button>
+  </div>
+</div>
+
+<script>
+    const API_BASE_URL = 'http://localhost:8080';
+
+    async function fetchNotes() {
+      const userId = document.getElementById('userIdInput').value;
+      try {
+        const response = await axios.get(`${API_BASE_URL}/notes/user/${userId}`);
+        const notes = response.data;
+        console.log('Fetched notes:', notes);
+        renderNotes(notes);
+      } catch (error) {
+        console.error('Error fetching notes:', error);
+      }
+    }
+
+function renderNotes(notes) {
+  const noteList = document.getElementById('noteList');
+  noteList.innerHTML = '';
+
+  notes.forEach(note => {
+    const noteContainer = document.createElement('div');
+    noteContainer.className = 'note';
+
+    const noteContent = document.createElement('div');
+    noteContent.textContent = note.text;
+    noteContent.className = 'note-content';
+
+    const noteActions = document.createElement('div');
+    noteActions.className = 'note-actions';
+
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = 'Delete';
+    deleteButton.onclick = () => deleteNote(note.id);
+
+    const updateButton = document.createElement('button');
+    updateButton.textContent = 'Update';
+    updateButton.onclick = () => updateNote(note.id);
+
+    noteActions.appendChild(deleteButton);
+    noteActions.appendChild(updateButton);
+
+    noteContainer.appendChild(noteContent);
+    noteContainer.appendChild(noteActions);
+
+    noteList.appendChild(noteContainer);
+  });
+}
+
+    async function createNote() {
+      const newNoteText = document.getElementById('newNoteInput').value;
+      const userId = document.getElementById('userIdInput').value;
+      try {
+        await axios.post(`${API_BASE_URL}/notes`, { text: newNoteText, owner: userId });
+        document.getElementById('newNoteInput').value = '';
+        fetchNotes();
+      } catch (error) {
+        console.error('Error creating note:', error);
+      }
+    }
+
+    async function deleteNote(noteId) {
+      try {
+        await axios.delete(`${API_BASE_URL}/notes/${noteId}`);
+        fetchNotes();
+      } catch (error) {
+        console.error('Error deleting note:', error);
+      }
+    }
+
+    async function updateNote(noteId) {
+      const updatedText = prompt('Enter updated text');
+      const userId = document.getElementById('userIdInput').value;
+      try {
+        await axios.patch(`${API_BASE_URL}/notes/user/${userId}/note/${noteId}`, { text: updatedText });
+        fetchNotes();
+      } catch (error) {
+        console.error('Error updating note:', error);
+      }
+    }
+  </script>
+</body>
+</html>
